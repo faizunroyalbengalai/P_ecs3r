@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>p_ecs3</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0d1117;
+      color: #e6edf3;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 2rem;
+      width: 100%;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #238636, #2ea043);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 16px;
+      padding: 3rem 3.5rem;
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5),
+                  0 0 0 1px rgba(255, 255, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #58a6ff, #bc8cff, #58a6ff);
+      background-size: 200% 100%;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .icon-wrap {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.8rem;
+      box-shadow: 0 4px 20px rgba(88, 166, 255, 0.3);
+    }
+
+    .icon-wrap svg {
+      width: 32px;
+      height: 32px;
+      fill: #ffffff;
+    }
+
+    .project-name {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #e6edf3 30%, #8b949e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.4rem;
+    }
+
+    .tagline {
+      color: #8b949e;
+      font-size: 0.95rem;
+      margin-bottom: 2.2rem;
+      line-height: 1.5;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #21262d;
+      margin: 0 0 2rem;
+    }
+
+    .repo-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #6e7681;
+      margin-bottom: 0.6rem;
+    }
+
+    .repo-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 0.85rem 1.2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+
+    .repo-card:hover {
+      border-color: #58a6ff;
+      box-shadow: 0 0 12px rgba(88, 166, 255, 0.15);
+    }
+
+    .repo-card svg {
+      width: 18px;
+      height: 18px;
+      fill: #58a6ff;
+      flex-shrink: 0;
+    }
+
+    .repo-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #58a6ff;
+      letter-spacing: 0.01em;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #e6edf3;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: #6e7681;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2ea043;
+      display: inline-block;
+      margin-right: 4px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    footer {
+      width: 100%;
+      text-align: center;
+      padding: 1.4rem 1rem;
+      border-top: 1px solid #21262d;
+      color: #6e7681;
+      font-size: 0.82rem;
+      letter-spacing: 0.03em;
+    }
+
+    footer span {
+      color: #8b949e;
+      font-weight: 500;
+    }
+
+    @media (max-width: 560px) {
+      .card {
+        padding: 2.2rem 1.8rem;
+      }
+      .project-name {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="badge">&#x2022; Active Project</div>
+
+    <div class="card">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+        </svg>
+      </div>
+
+      <h1 class="project-name">p_ecs3</h1>
+      <p class="tagline">A powerful, lightweight project built for performance and scalability.</p>
+
+      <hr class="divider" />
+
+      <p class="repo-label">Repository</p>
+      <div class="repo-card">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 3h18a1 1 0 011 1v16a1 1 0 01-1 1H3a1 1 0 01-1-1V4a1 1 0 011-1zm5.5 10.5v2h7v-2h-7zm0-3v2h7v-2h-7zm0-3v2h7v-2h-7z"/>
+        </svg>
+        <span class="repo-name">P_ecs3r</span>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-value">v1.0</span>
+          <span class="stat-label">Version</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value"><span class="stat-dot"></span>Live</span>
+          <span class="stat-label">Status</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">MIT</span>
+          <span class="stat-label">License</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Developed by <span>Royal Bengal AI</span>
+  </footer>
+
+</body>
+</html>
